@@ -4,20 +4,6 @@ require('dotenv').config()
 var fs = require('fs');
 const nodemailer = require("nodemailer");
 
-// function createDate(name){
-//   let day = getDate();
-//   day.toString();
-//   let month = getMonth();
-//   month.toString();
-//   let year = getFullYear();
-//   year.toString();
-//   let sec = getMilliseconds();
-//   sec.toString();
-//   let min = getMinutes();
-//   min.toString();
-//   return `${name}-${day}-${month}-${year}-${min}-${sec}`
-// }
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -55,10 +41,13 @@ router.post('/form', async function(req, res, next) {
     from:'sales3@daganm.co.il',
     to:'gshachargilad@gmail.com',
     subject:`קורות חיים חדשים - ${req.body.firstName}-${req.body.lastName}`,
-    html:`name: ${req.body.firstName}
+    html:`שם פרטי: ${req.body.firstName}
     <br>
-    lastname: ${req.body.lastName}
+    שם משפחה: ${req.body.lastName}
     <br>
+    טלפון: ${req.body.phone}
+    <br>
+    
     `,
     attachments:[{path:`${req.body.firstName}.${type}`}]
   }
@@ -71,8 +60,6 @@ router.post('/form', async function(req, res, next) {
       console.log("Email sent");
       try {
         fs.unlinkSync(`${req.body.firstName}.${type}`);
-        //file removed
-        console.log("file Removed");
       } catch(err) {
         console.error(err);
       }
