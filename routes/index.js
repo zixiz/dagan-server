@@ -23,7 +23,7 @@ router.post('/form', async function(req, res, next) {
   }
   // fileName = createDate(req.body.firstName);
   let base64file = req.body.file.split(';base64,').pop();
-  fs.writeFile(`${req.body.firstName}.${type}`, base64file, {encoding: 'base64'}, function(err) {
+  fs.writeFile(`${req.body.firstName}-${req.body.lastName}.${type}`, base64file, {encoding: 'base64'}, function(err) {
     console.log('File created');
 });
   let transporter = nodemailer.createTransport({
@@ -49,7 +49,7 @@ router.post('/form', async function(req, res, next) {
     <br>
     
     `,
-    attachments:[{path:`${req.body.firstName}.${type}`}]
+    attachments:[{path:`${req.body.firstName}-${req.body.lastName}.${type}`}]
   }
 
   transporter.sendMail(mailOption,function(err,data){
@@ -59,7 +59,7 @@ router.post('/form', async function(req, res, next) {
     }else{
       console.log("Email sent");
       try {
-        fs.unlinkSync(`${req.body.firstName}.${type}`);
+        fs.unlinkSync(`${req.body.firstName}-${req.body.lastName}.${type}`);
       } catch(err) {
         console.error(err);
       }
